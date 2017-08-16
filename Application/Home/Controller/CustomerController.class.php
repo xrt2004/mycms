@@ -102,16 +102,16 @@ class CustomerController extends BaseController {
 	    {
 	        $CustomerFansDao = M("CustomerFans");
 	       
-	        $map['id'] = $customerId;
+	        $map['customerid'] = $customerId;
 	       
 	        $CustomerFans = $CustomerFansDao->where($map)->select();
 	        //$customerItem = $Customer->field('*')->where($map)->find();
-	        
+	       
 	        if(NULL==$CustomerFans)
 	        {
-	           $CustomerFansDao->add(array(
+	              $CustomerFansDao->add(array(
 	                'customerid'	=> $customerId,
-	                'fansid'		=> I('fansid')
+	                'fansid'		=> 1
 	            ));
 	           $Customer = M("Customer");
 	           $Customer->where(array('id'=>$customerId))->setInc('fanscount',1); // 文章阅读数加1
@@ -122,7 +122,17 @@ class CustomerController extends BaseController {
 	        }
 	        else
 	        {    	
-	            $this->render('14006', 'Add fans failed');        
+	          	      
+  
+	     
+	           $CustomerFansDao->where(array('customerid'=>$customerId))->setInc('fansid',1); // 文章阅读数加1
+	           	   
+	           $Customer = M("Customer");
+	           $Customer->where(array('id'=>$customerId))->setInc('fanscount',1); // 文章阅读数加1
+	           
+	           $Notice = M("Notice");
+	           $Notice->where(array('customerid'=>$customerId))->setInc('fanscount',1); // 文章阅读数加1
+	           $this->render('10000', 'Add fans ok');
 	        }
 
 	    }

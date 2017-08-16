@@ -1,6 +1,8 @@
 <?php
 namespace Home\Controller;
 use Think\Controller;
+
+import('ORG.Net.UploadFile');
 class BlogController extends BaseController {
    
    
@@ -35,14 +37,16 @@ class BlogController extends BaseController {
         if ($blogList) 
         {
             foreach ($blogList as &$row) {
+               /*
                 if (strlen($row['picture']) > 0) 
                 {
-                    $row['picture'] = __PICTURE_URL . $row['picture'];
+                    $row['picture'] = C("TMPL_PARSE_STRING")["__HOME_IMAGE__"] . $row['picture'];
                 }
+                */
             }
             $this->render('10000', 'Get blog list ok', array(
-                'Blog.list' => $blogList
-            ));
+                'Blog' => $blogList
+            ), 1);
         }
         $this->render('14008', 'Get blog list failed');
     }
@@ -67,16 +71,17 @@ class BlogController extends BaseController {
         }
         else
         {
-        
+        /*
             if (strlen($blogItem['picture']) > 0) {
                 $blogItem['picture'] = __PICTURE_URL . $blogItem['picture'];
-            }
+            }*/
             
             $customerDao = M('Customer');       
-            $map['id'] =$blogItem['customerid'];
+            $map['id'] =$blogItem[0]['customerid'];
             // 把查询条件传入查询方法
             $customerItem = $customerDao->where($map)->select();
             
+    
             $this->render('10000', 'Get blog ok', array(
                 'Customer' => $customerItem,
                 'Blog' => $blogItem
@@ -95,42 +100,62 @@ class BlogController extends BaseController {
     
         if ($content) 
         {
-            // upload pic logic
-            $upload_file_url = '';
-            $upload_err = $_FILES['file0']['error'];
-            $upload_file = $_FILES['file0']['tmp_name'];
-            $upload_file_name = $_FILES['file0']['name'];
-            if ($upload_file_name) {
-                $upload_file_ext = pathinfo($upload_file_name, PATHINFO_EXTENSION);
-                if ($upload_err == 0) {
-                    $upload_face_dir = __PICTURE_DIR . '/';
-                    $upload_file_name = md5(time().rand(123456,999999));
-                    $upload_file_path = $upload_face_dir . $upload_file_name . '.' . $upload_file_ext;
-                    if (!move_uploaded_file($upload_file, $upload_file_path)) {
-                        $this->render('14010', 'Create blog failed');
-                    } else {
-                        $upload_file_url = $upload_file_name . '.' . $upload_file_ext;
-                    }
-                } else {
-                    $this->render('14011', 'Create blog failed');
-                }
-            }
-            // create
+        
+        if (! empty ( $_FILES )) 
+        {
+             $upload = new \Think\Upload();// 实例化上传类
+		    $upload->maxSize   =     3145728 ;// 设置附件上传大小
+		    $upload->exts      =     array('jpg', 'gif', 'png', 'jpeg');// 设置附件上传类型
+		    $upload->rootPath  =     './Upload/'; // 设置附件上传根目录
+		    $upload->savePath  =     ''; // 设置附件上传（子）目录
+		    	
+		    	//略所图
+        $upload->thumb = true; //开启略所图
+        $upload->thumbType = 0; //保持原始比例
+        $upload->thumbMaxWidth = '50,480';
+        $upload->thumbMaxHeight = '50,640';
+		    // 上传文件 
+		    $info   =   $upload->upload();
+		    if(!$info) 
+		    {  // 上传错误提示错误信息
+		      $this->render('10030', 'upload error', array("aa"=>"bb"));   
+		    }
+		    else
+		    {// 上传成功
+		          //  $uploadList = $upload->getUploadFileInfo();
+		          // dump($info['file0']['savename']);   $file['savePath'].$file['savename']
+ 
+ 
+			 
+			
+ 
+ 
+		         //  $this->render('10000', 'upload ok', array("aa"=>"bb"));   
+		    }
+		} //end if empty
+     
+            
+    
             $blogDao = M('Blog');
-            $blogDao->create(array(
-                'customerid'	=> $this->customer['id'],
-                'desc'			=> '',
-                'title'			=> '',
+             $upload_file_url='http://192.168.31.208/mycms/Upload/' . $info['file0']['savepath'] . $info['file0']['savename'];
+           //  dump($upload_file_url);
+            $blogDao->add(array(
+                'customerid'	=>1,
+                'desc'			=> '0',
+                'title'			=> 'title '.$content,
                 'content'		=> $content,
                 'picture'		=> $upload_file_url,
+                 'face'		=> $upload_file_url,
                 'commentcount'	=> 0
             ));
-            // add customer blogcount
-            $customerDao = $this->dao->load('Core_Customer');
-            $customerDao->addBlogcount($this->customer['id']);
-            $this->render('10000', 'Create blog ok');
-        }
-        $this->render('14009', 'Create blog failed');
+   
+         
+             $this->render('10000', 'create blog  OK', array("aa"=>"bb"));   
+        } //  if ($content)
+        $this->render('14009', 'Create blog failed', array("aa"=>"bb"));   
+        
+        
     }
     /////////////////
 }
+

@@ -5,6 +5,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+<img src="/mycms/Upload/Home/image/1.jpg" alt=""/>/mycms/Upload/Home/image/1.jpg
 <ul>
 <li><a href="<?php echo U('Home/index/test');?>">test get customer</a> --><?php echo U('Home/index/test');?> </li>
 <li><a href="<?php echo U('Home/index/login/name/james/pass/james');?>">test login  </a>--><?php echo U('Home/index/login/name/james/pass/james');?></li>
@@ -60,11 +61,12 @@ content<input type="text" name="content" value="content"/>
 <li><a href="<?php echo U('Home/Blog/blogList/typeId/0/pageId/0/customerid/1');?>">test blogListe  </a>--><?php echo U('Home/Blog/blogList');?></li>
 <li><a href="<?php echo U('Home/Blog/blogView/blogId/1');?>">test blogView  </a>--><?php echo U('Home/Blog/blogList');?></li>
 </ul>
-<form action="<?php echo U('Home/Blog/blogCreate');?>">
-customerCreate<br>
+<form action="<?php echo U('Home/Blog/blogCreate');?>" enctype="multipart/form-data" method="post">
+blogCreate<br>
 blogId<input type="text" name="blogId" value="1"/>
 content<input type="text" name="content" value="content"/>
  customerid<input type="text" name="customerid" value="customerid"/>
+ <input type="file" name="picture" />
 <input type="submit"/>
 </form>
 

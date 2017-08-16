@@ -26,7 +26,7 @@ class CommentController extends BaseController {
         else
         {    
             $this->render('10000', 'get comment list success', array(
-                 'Comment.list' => $commentList
+                 'Comment' => $commentList
             ));
         
         }

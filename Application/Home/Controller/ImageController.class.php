@@ -51,7 +51,7 @@ class ImageController extends BaseController {
     public function faceList()
     {
         // valid face ids
-        $faceIdArr = range(0,14);
+        $faceIdArr = range(1,4);
         // get face images
         $faceList = array();
 		
@@ -60,7 +60,7 @@ class ImageController extends BaseController {
 			    $faceList[] = DemoUtilImage::getFaceImage($faceId);  
         }
         $this->render('10000', 'Get face list ok', array(
-           'Image.list' => $faceList
+           'Image' => $faceList
         ));
 		
     }

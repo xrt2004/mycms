@@ -13,10 +13,11 @@ class DemoUtilImage
     {
  
 		
-        $facePath = WEB_URL . '/Data/faces';
+       // $facePath = WEB_URL . '/Data/faces';
       // $facePath="";
     
-        return    $facePath.'/face_' . $id . '.gif';
+      //  return    $facePath.'/face_' . $id . '.gif';
+    return   'http://192.168.31.208/mycms/Upload/Home/image/' . $id .'.jpg';
     }
     
     /**

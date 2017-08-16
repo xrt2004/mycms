@@ -19,5 +19,8 @@ return array(
 
 'DB_PREFIX' => '', // 数据库表前缀
 
+'TMPL_PARSE_STRING'     =>  array(                        //定义常用路径
+        '__HOME_IMAGE__'    =>  __ROOT__.trim(UPLOAD_PATH,'.').'Home/image/',
+    ),
 );
 

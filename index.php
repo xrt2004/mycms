@@ -27,10 +27,9 @@ define('RUNTIME_PATH','./Runtime/');
 // 定义应用目录
 define('APP_PATH','./Application/');
 
-define('WEB_URL',"http://localhost/mycms/");
-define('CURRENT_ROOT',dirname(__FILE__));
-define('MAIN_PROJECT_PATH',CURRENT_ROOT.'./'); 
-define('QSCMS_DATA_PATH', APP_PATH.'Data/');
+
+// 定义模板文件默认目录
+define("UPLOAD_PATH","./Upload/");
 
 // 引入ThinkPHP入口文件
 require './ThinkPHP/ThinkPHP.php';
